@@ -183,11 +183,15 @@ public class LocationService extends Service {
     @Override
     public void onDestroy() {
         log.info("Destroying LocationService");
-        provider.onDestroy();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            handlerThread.quitSafely();
-        } else {
-            handlerThread.quit(); //sorry
+        if (provider != null){
+            provider.onDestroy();
+        }
+        if (handlerThread != null){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    handlerThread.quitSafely();
+            } else {
+                handlerThread.quit(); //sorry
+            }
         }
         unregisterReceiver(connectivityChangeReceiver);
         super.onDestroy();
@@ -196,7 +200,7 @@ public class LocationService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         log.debug("Task has been removed");
-        if (config.getStopOnTerminate()) {
+        if (config != null && config.getStopOnTerminate()) {
             log.info("Stopping self");
             stopSelf();
         } else {

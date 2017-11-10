@@ -116,6 +116,8 @@ public class ActivityRecognitionLocationProvider extends AbstractLocationProvide
         } catch (SecurityException e) {
             log.error("Security exception: {}", e.getMessage());
             this.handleSecurityException(e);
+        } catch (Exception e) {
+            log.error("Exception: {}", e.getMessage());
         }
     }
 
